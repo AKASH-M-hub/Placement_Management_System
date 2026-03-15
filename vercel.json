@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "installCommand": "cd PMS && npm install && npm run install:frontend",
+  "buildCommand": "cd PMS && npm run build",
+  "outputDirectory": "PMS/frontend/dist",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
