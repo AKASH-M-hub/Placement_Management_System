@@ -31,23 +31,9 @@ public class SecurityConfig {
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(
-                    "/",
-                    "/login.html",
-                    "/register.html",
-                    "/student-dashboard.html",
-                    "/admin-dashboard.html",
-                    "/student.html",
-                    "/student.js",
-                    "/admin.js",
-                    "/js/**",
-                    "/css/**",
-                    "/favicon.ico"
-                ).permitAll()
-
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/admin/auth/**").permitAll()
-                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                .requestMatchers("/api/admin/**").hasAnyRole("ADMIN", "PLACEMENT_COORDINATOR")
 
                 .requestMatchers("/api/student/**").hasRole("STUDENT")
 

@@ -1,0 +1,13 @@
+{
+  "name": "pms",
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix frontend run dev",
+    "build": "npm --prefix frontend run build",
+    "preview": "npm --prefix frontend run preview",
+    "install:frontend": "npm --prefix frontend install"
+  },
+  "dependencies": {
+    "react": "^19.2.4"
+  }
+}

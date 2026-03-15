@@ -4,6 +4,8 @@ import com.example.PMS.Entity.Admin;
 import com.example.PMS.Repository.AdminRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Locale;
 import java.util.Optional;
 
 @Service
@@ -24,7 +26,13 @@ public class AdminService {
         }
         
         admin.setPassword(encoder.encode(admin.getPassword()));
-        admin.setRole("ROLE_ADMIN");
+        String requestedRole = admin.getRole();
+        if (requestedRole != null
+                && requestedRole.toUpperCase(Locale.ROOT).contains("PLACEMENT_COORDINATOR")) {
+            admin.setRole("ROLE_PLACEMENT_COORDINATOR");
+        } else {
+            admin.setRole("ROLE_ADMIN");
+        }
         return repo.save(admin);
     }
 

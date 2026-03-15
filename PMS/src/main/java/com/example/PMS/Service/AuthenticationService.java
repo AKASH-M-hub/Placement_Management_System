@@ -62,11 +62,12 @@ public class AuthenticationService {
             throw new IllegalArgumentException("Invalid email or password for admin account");
         }
 
-        String token = jwtUtil.generateToken(admin.getEmail(), "ROLE_ADMIN");
+        String token = jwtUtil.generateToken(admin.getEmail(), admin.getRole());
+        String normalizedRole = admin.getRole() == null ? "ADMIN" : admin.getRole().replace("ROLE_", "");
         
         return Map.of(
             "token", token,
-            "role", "ADMIN",
+            "role", normalizedRole,
             "email", admin.getEmail()
         );
     }

@@ -20,6 +20,9 @@ public class Student {
     private double cgpa;
     private String skills;
     private String role; // STUDENT
+    private String resumePath;
+    private String certificatesPath;
+    private String portfolioUrl;
 
     // getters & setters
     public Long getStudentId() { return studentId; }
@@ -45,4 +48,13 @@ public class Student {
 
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
+
+    public String getResumePath() { return resumePath; }
+    public void setResumePath(String resumePath) { this.resumePath = resumePath; }
+
+    public String getCertificatesPath() { return certificatesPath; }
+    public void setCertificatesPath(String certificatesPath) { this.certificatesPath = certificatesPath; }
+
+    public String getPortfolioUrl() { return portfolioUrl; }
+    public void setPortfolioUrl(String portfolioUrl) { this.portfolioUrl = portfolioUrl; }
 }

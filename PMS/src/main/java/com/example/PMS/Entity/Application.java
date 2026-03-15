@@ -2,6 +2,7 @@ package com.example.PMS.Entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "application")
@@ -23,8 +24,14 @@ public class Application {
     @JoinColumn(name = "admin_id")
     private Admin admin;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private ApplicationStatus status;
     private LocalDate appliedDate;
+    @Column(nullable = false, length = 1000)
+    private String reviewOpinion;
+    private LocalDateTime statusUpdatedAt;
+    @Column(length = 500)
+    private String statusRemarks;
 
     // Getters and Setters
     public Long getApplicationId() {
@@ -59,11 +66,11 @@ public class Application {
         this.admin = admin;
     }
 
-    public String getStatus() {
+    public ApplicationStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(ApplicationStatus status) {
         this.status = status;
     }
 
@@ -73,5 +80,29 @@ public class Application {
 
     public void setAppliedDate(LocalDate appliedDate) {
         this.appliedDate = appliedDate;
+    }
+
+    public String getReviewOpinion() {
+        return reviewOpinion;
+    }
+
+    public void setReviewOpinion(String reviewOpinion) {
+        this.reviewOpinion = reviewOpinion;
+    }
+
+    public LocalDateTime getStatusUpdatedAt() {
+        return statusUpdatedAt;
+    }
+
+    public void setStatusUpdatedAt(LocalDateTime statusUpdatedAt) {
+        this.statusUpdatedAt = statusUpdatedAt;
+    }
+
+    public String getStatusRemarks() {
+        return statusRemarks;
+    }
+
+    public void setStatusRemarks(String statusRemarks) {
+        this.statusRemarks = statusRemarks;
     }
 }

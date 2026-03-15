@@ -33,7 +33,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             return new User(
                 admin.getEmail(),
                 admin.getPassword(),
-                List.of(new SimpleGrantedAuthority("ROLE_ADMIN"))
+                List.of(new SimpleGrantedAuthority(admin.getRole()))
             );
         }
 
