@@ -74,6 +74,19 @@ npm run dev
 - Frontend: `http://localhost:5173`
 - Backend: `http://localhost:8080`
 
+## Vercel Deployment (Frontend)
+
+This repo includes `vercel.json` for deploying the Vite app from the repository root.
+
+Required Vercel environment variable:
+
+- `VITE_API_BASE_URL` = your deployed backend URL (for example: `https://your-backend-domain.com`)
+
+Why this is required:
+
+- In production, frontend and backend are usually on different domains.
+- The frontend uses `VITE_API_BASE_URL` to call backend APIs instead of relative `/api` paths.
+
 ## Documentation Index
 
 - Setup guide: [docs/SETUP.md](docs/SETUP.md)

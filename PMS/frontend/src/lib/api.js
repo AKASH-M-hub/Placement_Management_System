@@ -1,5 +1,14 @@
 import { getToken } from './auth';
 
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/+$/, '');
+
+const withBaseUrl = (url) => {
+  if (/^https?:\/\//i.test(url)) {
+    return url;
+  }
+  return API_BASE_URL ? `${API_BASE_URL}${url}` : url;
+};
+
 const buildHeaders = (extraHeaders = {}, includeAuth = false) => {
   const headers = { ...extraHeaders };
   if (includeAuth) {
@@ -12,7 +21,7 @@ const buildHeaders = (extraHeaders = {}, includeAuth = false) => {
 };
 
 export const apiRequest = async (url, options = {}) => {
-  const response = await fetch(url, options);
+  const response = await fetch(withBaseUrl(url), options);
 
   if (!response.ok) {
     let message = 'Request failed';
@@ -203,7 +212,7 @@ export const api = {
     }),
 
   downloadAnalyticsReport: async () => {
-    const response = await fetch('/api/admin/reports/analytics/pdf', {
+    const response = await fetch(withBaseUrl('/api/admin/reports/analytics/pdf'), {
       headers: buildHeaders({}, true),
     });
     if (!response.ok) {
