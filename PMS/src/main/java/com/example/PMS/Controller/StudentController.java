@@ -103,19 +103,23 @@ public class StudentController {
                                               Authentication authentication) {
         Student student = getCurrentStudent(authentication);
         String storedPath;
+        Student updatedStudent;
 
         if ("resume".equalsIgnoreCase(type)) {
             storedPath = documentStorageService.storeFile(file, "students/resume", String.valueOf(student.getStudentId()));
-            student.setResumePath(storedPath);
+            updatedStudent = studentService.updateResumePath(student, storedPath);
         } else if ("certificates".equalsIgnoreCase(type)) {
             storedPath = documentStorageService.storeFile(file, "students/certificates", String.valueOf(student.getStudentId()));
-            student.setCertificatesPath(storedPath);
+            updatedStudent = studentService.updateCertificatesPath(student, storedPath);
         } else {
             throw new IllegalArgumentException("Unsupported document type");
         }
 
-        studentService.updateProfile(student, student.getName(), student.getDept(), student.getCgpa(), student.getSkills(), student.getPortfolioUrl());
-        return Map.of("message", "Uploaded successfully", "path", storedPath);
+        return Map.of(
+                "message", "Uploaded successfully",
+                "path", storedPath,
+                "resumePath", updatedStudent.getResumePath() == null ? "" : updatedStudent.getResumePath()
+        );
     }
 
     @GetMapping("/documents/{type}")
@@ -137,9 +141,11 @@ public class StudentController {
         }
 
         Resource resource = documentStorageService.loadAsResource(path);
+        String fileName = documentStorageService.getFileName(path);
+        String contentType = documentStorageService.detectContentType(path);
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + type + "-" + student.getStudentId())
-                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
+            .contentType(MediaType.parseMediaType(contentType))
                 .body(resource);
     }
 

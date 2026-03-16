@@ -180,9 +180,11 @@ public class AdminController {
         }
 
         Resource resource = documentStorageService.loadAsResource(path);
+        String fileName = documentStorageService.getFileName(path);
+        String contentType = documentStorageService.detectContentType(path);
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + type + "-" + studentId)
-                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
+            .contentType(MediaType.parseMediaType(contentType))
                 .body(resource);
     }
 }

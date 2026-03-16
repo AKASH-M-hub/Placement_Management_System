@@ -58,6 +58,16 @@ public class StudentService {
         return repo.save(existingStudent);
     }
 
+    public Student updateResumePath(Student existingStudent, String resumePath) {
+        existingStudent.setResumePath(resumePath);
+        return repo.saveAndFlush(existingStudent);
+    }
+
+    public Student updateCertificatesPath(Student existingStudent, String certificatesPath) {
+        existingStudent.setCertificatesPath(certificatesPath);
+        return repo.saveAndFlush(existingStudent);
+    }
+
     public Map<String, Object> calculateProfileCompleteness(Student student) {
         int total = 5;
         int filled = 0;

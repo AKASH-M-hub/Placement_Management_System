@@ -1,12 +1,14 @@
 package com.example.PMS.Service;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -44,10 +46,28 @@ public class DocumentStorageService {
     public Resource loadAsResource(String absolutePath) {
         try {
             Path filePath = Paths.get(absolutePath).normalize();
-            byte[] bytes = Files.readAllBytes(filePath);
-            return new ByteArrayResource(bytes);
-        } catch (IOException exception) {
+            Resource resource = new UrlResource(filePath.toUri());
+            if (!resource.exists() || !resource.isReadable()) {
+                throw new RuntimeException("Unable to read file");
+            }
+            return resource;
+        } catch (MalformedURLException exception) {
             throw new RuntimeException("Unable to read file", exception);
+        }
+    }
+
+    public String getFileName(String absolutePath) {
+        Path filePath = Paths.get(absolutePath).normalize();
+        return filePath.getFileName().toString();
+    }
+
+    public String detectContentType(String absolutePath) {
+        try {
+            Path filePath = Paths.get(absolutePath).normalize();
+            String detected = Files.probeContentType(filePath);
+            return (detected == null || detected.isBlank()) ? MediaType.APPLICATION_OCTET_STREAM_VALUE : detected;
+        } catch (IOException exception) {
+            return MediaType.APPLICATION_OCTET_STREAM_VALUE;
         }
     }
 }
